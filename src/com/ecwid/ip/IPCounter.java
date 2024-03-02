@@ -8,6 +8,14 @@ public class IPCounter {
     long ipCount = 0;
     long addedIpCount = 0;
 
+    public long getIPCount() {
+        return ipCount;
+    }
+
+    public long getAddedIpCount() {
+        return addedIpCount;
+    }
+
     public void addIP(String ipAddress) {
         byte[] ipAddressParts = parseIP(ipAddress);
         if (ipAddressParts == null) {
@@ -19,14 +27,6 @@ public class IPCounter {
         Node node3 = node2.setValue(ipAddressParts[1], false);
         Node node4 = node3.setValue(ipAddressParts[2], false);
         node4.setValue(ipAddressParts[3], true);
-    }
-
-    public long getIPCount() {
-        return ipCount;
-    }
-
-    public long getAddedIpCount() {
-        return addedIpCount;
     }
 
     private byte[] parseIP(String ip) {
