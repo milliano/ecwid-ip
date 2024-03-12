@@ -17,7 +17,7 @@ public class IPCounter {
     }
 
     public void addIP(String ipAddress) {
-        byte[] ipAddressParts = parseIP(ipAddress);
+        int[] ipAddressParts = parseIP(ipAddress);
         if (ipAddressParts == null) {
             System.out.println("skip wrong ipAddress: " + ipAddress);
             return;
@@ -29,10 +29,10 @@ public class IPCounter {
         node4.setValue(ipAddressParts[3], true);
     }
 
-    private byte[] parseIP(String ip) {
+    private int[] parseIP(String ip) {
         String[] parts = ip.split("\\.");
         if (parts.length != 4) return null;
-        byte[] bytes = new byte[4];
+        int[] bytes = new int[4];
         for (int i = 0; i < 4; i++) {
             int part;
             try {
@@ -41,7 +41,7 @@ public class IPCounter {
                 return null;
             }
             if (part < 0 || part > 255) return null;
-            bytes[i] = (byte) (part - 128);
+            bytes[i] = part;
         }
         return bytes;
     }
@@ -50,7 +50,7 @@ public class IPCounter {
         private final long[] values = new long[4];
         private final List<Node> childNodes = new ArrayList<>();
 
-        public Node setValue(byte value, boolean isLastNode) {
+        public Node setValue(int value, boolean isLastNode) {
             if (isLastNode) {
                 if (isBitSet(values, value)) return null;
                 setBit(values, value);
@@ -70,27 +70,24 @@ public class IPCounter {
             return node;
         }
 
-        private void setBit(long[] bits, byte value) {
-            int positiveValue = value + 128;
-            int index = positiveValue / 64;
-            int bitOffset = positiveValue % 64;
+        private void setBit(long[] bits, int value) {
+            int index = value / 64;
+            int offset = value % 64;
 
-            bits[index] = bits[index] | (1L << bitOffset);
+            bits[index] = bits[index] | (1L << offset);
         }
 
-        private boolean isBitSet(long[] bits, byte value) {
-            int positiveValue = value + 128;
-            int index = positiveValue / 64;
-            int bitOffset = positiveValue % 64;
+        private boolean isBitSet(long[] bits, int value) {
+            int index = value / 64;
+            int offset = value % 64;
 
-            long mask = 1L << bitOffset;
+            long mask = 1L << offset;
             return (bits[index] & mask) != 0;
         }
 
-        private int getLeftBitsCount(long[] bits, byte value) {
-            int positiveValue = value + 128;
-            int index = positiveValue / 64;
-            int offset = positiveValue % 64;
+        private int getLeftBitsCount(long[] bits, int value) {
+            int index = value / 64;
+            int offset = value % 64;
 
             int bitCount = 0;
             for (int i = bits.length - 1; i > index; i--) {
