@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IPCounter {
-    Node rootNode = new Node();
-    long ipCount = 0;
-    long addedIpCount = 0;
+    private final Node rootNode = new Node();
+    private long ipCount = 0;
+    private long addedIpCount = 0;
 
     public long getIPCount() {
         return ipCount;
