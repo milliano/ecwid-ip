@@ -29,7 +29,7 @@ public class IPCounter {
         node4.setValue(ipAddressParts[3], true);
     }
 
-    private int[] parseIP(String ip) {
+    protected int[] parseIP(String ip) {
         String[] parts = ip.split("\\.");
         if (parts.length != 4) return null;
         int[] bytes = new int[4];
